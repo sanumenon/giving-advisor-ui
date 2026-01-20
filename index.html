@@ -85,7 +85,7 @@ You must only reference entities from the Charitable Impact platform.
 
 let messages = JSON.parse(localStorage.getItem("chat")) || [
   { role: "system", content: systemPrompt },
-  { role: "assistant", content: "Hello! I can help you allocate your donations across causes on Charitable Impact." }
+  { role: "assistant", content: "Hello! I can help you allocate your donations across causes on Charitable Impact. Give me your planned allocation amount and areas of interest" }
 ];
 
 const messagesDiv = document.getElementById("messages");
