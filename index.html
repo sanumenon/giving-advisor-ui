@@ -7,54 +7,131 @@
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #f4f7fb, #e8efff);
+      background: #f6f7fb;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
     }
-    .card {
+    .chat-container {
+      width: 100%;
+      max-width: 600px;
+      height: 90vh;
       background: white;
-      padding: 40px;
       border-radius: 16px;
-      max-width: 420px;
-      width: 90%;
       box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-      text-align: center;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
     }
-    h1 {
-      margin-top: 0;
-      font-size: 26px;
-    }
-    p {
-      color: #555;
-      line-height: 1.6;
-    }
-    button {
-      margin-top: 20px;
-      padding: 14px 28px;
-      font-size: 16px;
+    .header {
       background: #0056b3;
       color: white;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
+      padding: 16px;
+      font-weight: bold;
+      text-align: center;
     }
-    button:hover {
-      background: #003f88;
+    .messages {
+      flex: 1;
+      padding: 16px;
+      overflow-y: auto;
+    }
+    .message {
+      margin-bottom: 12px;
+      padding: 12px;
+      border-radius: 12px;
+      max-width: 80%;
+      line-height: 1.4;
+    }
+    .user { background: #e6f0ff; margin-left: auto; }
+    .bot { background: #f1f1f1; }
+    .input-area {
+      display: flex;
+      border-top: 1px solid #ddd;
+    }
+    input {
+      flex: 1;
+      padding: 14px;
+      border: none;
+      font-size: 16px;
+    }
+    button {
+      padding: 14px 20px;
+      border: none;
+      background: #0056b3;
+      color: white;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <div class="card">
-    <h1>Charitable Impact Giving Advisor</h1>
-    <p>
-      Get personalized recommendations on how to allocate your donations across
-      real charities, campaigns, and groups on the Charitable Impact platform.
-    </p>
-    <button onclick="window.open('https://chatgpt.com/g/g-6965c8c8c1f081918ad6977e97ddffee-charitable-impact-giving-advisor-bot-v1-0', '_blank')">
-      Start Chat
-    </button>
+
+<div class="chat-container">
+  <div class="header">Charitable Impact Giving Advisor</div>
+  <div class="messages" id="messages"></div>
+  <div class="input-area">
+    <input id="input" placeholder="Ask about donations..." />
+    <button onclick="sendMessage()">Send</button>
   </div>
+</div>
+
+<script>
+const API_KEY = "PASTE_YOUR_API_KEY_HERE"; // <-- replace this
+
+const systemPrompt = `
+You are a Charity, Group, and Campaign Recommendation Agent specialized in my.charitableimpact.com.
+You must only reference entities from the Charitable Impact platform.
+`;
+
+let messages = JSON.parse(localStorage.getItem("chat")) || [
+  { role: "system", content: systemPrompt },
+  { role: "assistant", content: "Hello! I can help you allocate your donations across causes on Charitable Impact." }
+];
+
+const messagesDiv = document.getElementById("messages");
+
+function renderMessages() {
+  messagesDiv.innerHTML = "";
+  messages.filter(m => m.role !== "system").forEach(m => {
+    const div = document.createElement("div");
+    div.className = "message " + (m.role === "user" ? "user" : "bot");
+    div.textContent = m.content;
+    messagesDiv.appendChild(div);
+  });
+  messagesDiv.scrollTop = messagesDiv.scrollHeight;
+}
+
+renderMessages();
+
+async function sendMessage() {
+  const input = document.getElementById("input");
+  const text = input.value.trim();
+  if (!text) return;
+
+  messages.push({ role: "user", content: text });
+  input.value = "";
+  renderMessages();
+
+  const response = await fetch("https://api.openai.com/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + API_KEY
+    },
+    body: JSON.stringify({
+      model: "gpt-4o-mini",
+      messages: messages
+    })
+  });
+
+  const data = await response.json();
+  const reply = data.choices[0].message.content;
+
+  messages.push({ role: "assistant", content: reply });
+  localStorage.setItem("chat", JSON.stringify(messages));
+  renderMessages();
+}
+</script>
+
 </body>
 </html>
