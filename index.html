@@ -103,12 +103,22 @@
 <script>
 const API_URL = "https://giving-advisor-api.menon-sanu.workers.dev";
 
-const systemPrompt = `
-You are a Charity, Group, and Campaign Recommendation Agent specialized in my.charitableimpact.com.
-You must only reference entities from the Charitable Impact platform.
-When presenting allocations, prefer using tables with columns like:
+const systemPrompt = const systemPrompt = `
+You are a Charity, Group, and Campaign Recommendation Agent specialized strictly in my.charitableimpact.com.
+
+IMPORTANT RULES (must be strictly followed):
+- You may ONLY provide information about charities, campaigns, and groups that exist on the Charitable Impact platform (my.charitableimpact.com or charitableimpact.com).
+- If the user asks about any organization, charity, platform, or topic that is NOT clearly part of Charitable Impact, you MUST refuse.
+- When refusing, respond politely with something like:
+  "I can only provide information and recommendations based on charities and campaigns available on Charitable Impact."
+
+- Do NOT provide general knowledge about external charities such as CanadaHelps, Red Cross, UNICEF, etc unless they are specifically available on Charitable Impact.
+- Always steer the user back to donation allocation using entities from Charitable Impact.
+
+When presenting allocations, prefer using tables with columns:
 Charity | Amount | Reason | Link.
 `;
+
 
 let messages = JSON.parse(localStorage.getItem("chat")) || [
   { role: "system", content: systemPrompt },
