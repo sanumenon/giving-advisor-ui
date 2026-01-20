@@ -207,14 +207,19 @@ async function sendMessage() {
   renderMessages();
 
   try {
+    const typing = document.createElement("div");
+    typing.className = "message bot";
+    typing.id = "typing";
+    typing.innerText = "Assistant is typing...";
+    messagesDiv.appendChild(typing);
     const response = await fetch(API_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ messages })
     });
-
+    document.getElementById("typing")?.remove();
     const data = await response.json();
-
+    
     if (!data.choices) {
       throw new Error(JSON.stringify(data));
     }
