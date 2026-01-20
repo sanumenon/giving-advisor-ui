@@ -112,7 +112,7 @@ async function sendMessage() {
   input.value = "";
   renderMessages();
 
-  const response = await fetch("https://api.openai.com/v1/chat/completions", {
+  const response = await fetch("https://giving-advisor-api.yourname.workers.dev" , {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
