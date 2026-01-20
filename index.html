@@ -186,7 +186,14 @@ function markdownTableToHtml(markdown) {
 }
 
 function clearChat() {
-  if (!confirm("Clear conversation?")) return;
+  localStorage.removeItem("chat");
+  messages = [
+    { role: "system", content: systemPrompt },
+    { role: "assistant", content: "Hello! I can help you to create an allocation portfolio for your donations. Tell me your amount and interests or causes that you support."}
+  ];
+  renderMessages();
+}
+
 
   localStorage.removeItem("chat");
   messages = [
