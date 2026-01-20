@@ -99,8 +99,6 @@
   <button onclick="sendMessage()">Send</button>
   <button onclick="clearChat()">Clear</button>
 </div>
-
-  </div>
 </div>
 
 <script>
@@ -130,8 +128,12 @@ let messages = JSON.parse(localStorage.getItem("chat")) || [
 const messagesDiv = document.getElementById("messages");
 
 function handleKey(e) {
-  if (e.key === "Enter") sendMessage();
+  if (e.key === "Enter" && !e.shiftKey) {
+    e.preventDefault();
+    sendMessage();
+  }
 }
+
 
 function renderMessages() {
   messagesDiv.innerHTML = "";
@@ -183,6 +185,18 @@ function markdownTableToHtml(markdown) {
   return html;
 }
 
+function clearChat() {
+  if (!confirm("Clear conversation?")) return;
+
+  localStorage.removeItem("chat");
+  messages = [
+    { role: "system", content: systemPrompt },
+    { role: "assistant", content: "Hello! I can help you allocate your donations. Tell me your amount and interests." }
+  ];
+  renderMessages();
+}
+
+  
 async function sendMessage() {
   const input = document.getElementById("input");
   const text = input.value.trim();
