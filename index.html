@@ -122,7 +122,7 @@ Charity | Amount | Reason | Link.
 
 let messages = JSON.parse(localStorage.getItem("chat")) || [
   { role: "system", content: systemPrompt },
-  { role: "assistant", content: "Hello! I can help you allocate your donations. Tell me your amount and interests." }
+  { role: "assistant", content: "Hello! I can help you to create an allocation portfolio for your donations. Tell me your amount and interests or causes that you support." }
 ];
 
 const messagesDiv = document.getElementById("messages");
