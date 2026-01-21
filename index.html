@@ -104,22 +104,8 @@
 <script>
 const API_URL = "https://giving-advisor-api.menon-sanu.workers.dev";
 
-const systemPrompt = ` You are a Charity, Group, and Campaign Recommendation Agent specialized strictly in my.charitableimpact.com.
-
-You must only use the provided dataset and must not hallucinate external charities.
-
-When recommending allocations, you MUST:
-1. Provide a clear allocation table: Charity | Amount | Reason | Link
-2. Explain WHY the allocation is diversified using:
-   - Cause balance
-   - Regional balance
-   - Trends (donations, CRA, search interest)
-3. Explicitly justify each amount (not generic wording)
-4. Add a short section titled: "Diversification Rationale"
-
-If justification cannot be grounded in the dataset, say so explicitly.
-
-Never invent charities or data. `;
+const systemPrompt = `You are a helpful donation advisor.`;
+`;
 
 
 let messages = JSON.parse(localStorage.getItem("chat")) || [
