@@ -215,7 +215,7 @@ async function sendMessage() {
     const typing = document.createElement("div");
     typing.className = "message bot";
     typing.id = "typing";
-    typing.innerText = "Assistant is typing...";
+    typing.innerText = "Advisor is typing...";
     messagesDiv.appendChild(typing);
     const response = await fetch(API_URL, {
       method: "POST",
