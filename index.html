@@ -70,16 +70,24 @@
       margin-top: 10px;
       width: 100%;
       font-size: 14px;
+      table-layout: fixed; /* 🔥 Important: prevents column overflow */
     }
+    
     th, td {
       border: 1px solid #ddd;
       padding: 8px;
       text-align: left;
+      vertical-align: top;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      white-space: normal; /* 🔥 Forces wrapping inside same cell */
     }
+    
     th {
       background: #f0f4ff;
       font-weight: bold;
     }
+
     a {
       color: #0056b3;
       text-decoration: none;
