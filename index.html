@@ -223,7 +223,7 @@ async function sendMessage() {
     const response = await fetch(API_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ user_id: "demo-user-1" , messages })
+      body: JSON.stringify({ messages })
     });
     document.getElementById("typing")?.remove();
     const data = await response.json();
