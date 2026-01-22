@@ -157,8 +157,11 @@ function renderMarkdown(text) {
     return markdownTableToHtml(tableMarkdown);
   });
 
-  // Preserve line breaks
-  return text.replace(/\n/g, "<br>");
+  // Preserve paragraphs properly
+  return text
+    .replace(/\n\n/g, "<br><br>")   // paragraph breaks
+    .replace(/\n/g, "<br>");
+
 }
 
 function markdownTableToHtml(markdown) {
